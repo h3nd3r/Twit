@@ -44,43 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         print(url.description)
+
+        TwitterClient.sharedInstance.handleOpenUrl(url: url)
         
-        let twitterClient = BDBOAuth1SessionManager(baseURL: URL(string: "https://api.twitter.com"), consumerKey: "IHeVRsv0giLNYkc4hBQYd8JKB", consumerSecret: "a1VWtMq4qvaXiMx6zWKLtkf5uuwWndj9G1V2oqQexWzHma1mkU")
-        
-        
-        
-        let requestToken = BDBOAuth1Credential(queryString: url.query)
-        
-        twitterClient?.fetchAccessToken(withPath: "oauth/access_token", method: "POST", requestToken: requestToken, success: { (accessToken:
-                BDBOAuth1Credential?) -> Void in
-                print("I got the access token!")
-            
-                twitterClient?.get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) -> Void in
-                    print("account: \(response)")
-                    let userDictionary = response as? NSDictionary
-                    
-                    let user = User(dictionary: userDictionary!)
-                    
-                    //print("user: \(user)")
-                    print("name: \(user.name)")
-                    print("screenname: \(user.screenname)")
-                    print("profile url: \(user.profileUrl)")
-                    print("description: \(user.description)")
-                    
-                    }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in })
-            
-                twitterClient?.get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil,
-                    success: { (task: URLSessionDataTask, response: Any?) -> Void in
-                    let dictionaries = response as! [NSDictionary]
-                        let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
-                        for tweet in tweets {
-                            print("\(tweet.text)")
-                        }
-                    }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in })
-            
-            }) { (error: Error?) -> Void in
-                print("error: \(error)")
-        }
             
         return true
     }
