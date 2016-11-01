@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         if User.currentUser != nil {
@@ -34,8 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.window?.rootViewController = vc
         })
         
-            
-            return true
+        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -65,7 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         TwitterClient.sharedInstance.handleOpenUrl(url: url)
         
-            
         return true
     }
 }

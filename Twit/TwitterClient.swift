@@ -11,7 +11,7 @@ import BDBOAuth1Manager
 
 class TwitterClient: BDBOAuth1SessionManager {
 
-    static let sharedInstance = TwitterClient(baseURL: URL(string: "https://api.twitter.com"), consumerKey: "IHeVRsv0giLNYkc4hBQYd8JKB", consumerSecret: "a1VWtMq4qvaXiMx6zWKLtkf5uuwWndj9G1V2oqQexWzHma1mkU")!
+    static let sharedInstance = TwitterClient(baseURL: URL(string: "https://api.twitter.com"), consumerKey: "rRA6Vb8YQCSdm5BXuDXjv67EQ", consumerSecret: "KiZmnHJtt1bjmFtX897EWLOzP2P26w9cvN1obV8aU7OIA5euBq")!
 
     var signinSuccess: (() -> ())?
     var signinFailure: ((NSError) -> ())?
@@ -74,7 +74,9 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
-    func homeTimeline(success: @escaping ([Tweet]) ->(), failure: (NSError) ->()) {
+    func homeTimeline(success: @escaping ([Tweet]) ->(), failure: @escaping (NSError) ->()) {
+        print("trying to fetch my timeline")
+
         get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil,
                    success: { (task: URLSessionDataTask, response: Any?) -> Void in
                     let dictionaries = response as! [NSDictionary]
@@ -85,7 +87,52 @@ class TwitterClient: BDBOAuth1SessionManager {
                     //for tweet in tweets {
                     //    print("\(tweet.text)")
                     //}
-            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in })
+            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+                failure(error as NSError)
+        })
+    }
+    
+    func tweet(message: String, retweet_id: String?, success: @escaping () ->(), failure: @escaping (NSError) ->()) {
+        print("trying to send a tweet")
+        // TODO: set parameters
+        var parameters: [String: AnyObject] = ["status" : message as AnyObject]
+        
+        if (retweet_id != nil) {
+            parameters["in_reply_to_status_id"] = retweet_id as AnyObject?
+        }
+        
+        var tmp = post("1.1/statuses/update.json", parameters: parameters, progress: nil,
+            success: { (task: URLSessionDataTask, response: Any?) -> Void in
+              print("tweeted successfully")
+              success()
+                
+            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+                failure(error as NSError)
+        })
+    }
+    func favorite(favorite_id: String, success: @escaping () ->(), failure: @escaping (NSError) ->()) {
+        print("trying to favorite")
+        let parameters: [String: AnyObject] = ["id" : favorite_id as AnyObject]
+        post("/1.1/favorites/create.json", parameters: parameters, progress: nil,
+                       success: { (task: URLSessionDataTask, response: Any?) -> Void in
+                        print("favorited successfully")
+                        success()
+                        
+            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+                failure(error as NSError)
+        })
+    }
+    
+    func retweet(retweet_id: String, success: @escaping () ->(), failure: @escaping (NSError) ->()) {
+        print("trying to send a retweet with message id \(retweet_id)")
+        post("1.1/statuses/retweet/" + retweet_id + ".json", parameters: nil, progress: nil,
+                       success: { (task: URLSessionDataTask, response: Any?) -> Void in
+                        print("retweeted successfully")
+                        success()
+                        
+            }, failure: { (task: URLSessionDataTask?, error: Error) -> Void in
+                failure(error as NSError)
+        })
     }
     
     func signout(){

@@ -10,9 +10,15 @@ import UIKit
 import BDBOAuth1Manager
 
 class SignInViewController: UIViewController {
+    @IBOutlet weak var signInButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        signInButton.layer.cornerRadius = 10;
+        signInButton.clipsToBounds = true;
+        signInButton.layer.borderWidth = 1;
+        signInButton.layer.borderColor = UIColor.darkGray.cgColor
     }
     
     override func didReceiveMemoryWarning() {
