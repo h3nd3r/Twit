@@ -74,11 +74,21 @@ class TweetsViewController: UIViewController {
     }
 }
 
-extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
+extension TweetsViewController: UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, tableDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TweetCell
         cell.tweet = tweets.tweets[indexPath.row]
+        cell.delegate = self
         return cell
+    }
+
+    func tableDelegate(userId: String) {
+        print("tapped \(userId)")
+        User.current?.userId = userId
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let profileViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+        self.navigationController?.pushViewController(profileViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
