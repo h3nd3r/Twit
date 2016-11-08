@@ -1,8 +1,8 @@
-# Project 3 - *Name of App Here*
+# Project 3 - Twit
 
-**Name of your app** is a basic twitter app to read and compose tweets from the [Twitter API](https://apps.twitter.com/).
+Twit is a basic twitter app to read and compose tweets from the [Twitter API](https://apps.twitter.com/).
 
-Time spent: **X** hours spent in total
+Time spent: 10 hours spent in total
 
 ## User Stories
 
@@ -20,7 +20,7 @@ The following **optional** features are implemented:
 
 - [X] When composing, you should have a countdown in the upper right for the tweet limit.
 - [ ] After creating a new tweet, a user should be able to view it in the timeline immediately without refetching the timeline from the network.
-- [ ] Retweeting and favoriting should increment the retweet and favorite count.
+- [X] Retweeting and favoriting should increment the retweet and favorite count.
 - [ ] User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
 - [X] Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
 - [ ] User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
@@ -38,7 +38,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/YiGxNcg.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -48,7 +48,7 @@ Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright 2016 Sara Hender
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
