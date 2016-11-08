@@ -22,6 +22,8 @@ class TweetDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(#function)
 
         self.title = "Tweet"
 
@@ -29,11 +31,19 @@ class TweetDetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem  = replyButton
         
         userImageView.setImageWith((tweet?.userImageUrl!)!)
+        
+        userImageView.layer.cornerRadius = 3
+        userImageView.clipsToBounds = true
+        
         usernameLabel.text = tweet?.user
         timestampLabel.text = tweet?.timestamp
         tweetLabel.text = tweet?.text
         retweetsCountLabel.text = String(describing: tweet?.retweetCount ?? 0)
         favoritesCountLabel.text = String(describing: tweet?.favoriteCount ?? 0)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print(#function)
     }
 
     override func didReceiveMemoryWarning() {

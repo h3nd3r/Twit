@@ -14,50 +14,50 @@ class User: NSObject {
     var profileUrl: URL?
     var tagline: String?
     var dictionary: NSDictionary?
+    var userId: String?
+    var tweets: String = "0"
+    var followers: String = "0"
+    var following: String = "0"
+    var profileBackgroundUrl: URL?
     
-    init(dictionary: NSDictionary) {
-        self.dictionary = dictionary
-        name = dictionary["name"] as? String
-        screenname = dictionary["screen_name"] as? String
-        let profileUrlString = dictionary["profile_image_url_https"] as? String
-        if let profileUrlString = profileUrlString {
-            profileUrl = URL(string: profileUrlString)
-        }
-        tagline = dictionary["description"] as? String
-    }
-    static let userDidLogoutNotification = "UserDidLogout"
-    static var _currentUser: User?
-    class var currentUser: User? {
+//    "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+//    "profile_background_color": "C0DEED",
+    
+    static var _current: User?
+    class var current: User? {
         get {
-            if _currentUser == nil {
-                let defaults = UserDefaults.standard
-                
-                let userData = defaults.object(forKey: "currentUserData") as? NSData
-                
-                if let userData = userData {
-                    let dictionary = try! JSONSerialization.jsonObject(with: userData as Data, options: [])
-                    _currentUser = User(dictionary: dictionary as! NSDictionary)
-                }
+            if _current == nil {
+                _current = SignInUser._currentUser
             }
-            return _currentUser
+            return _current
         }
         set(user) {
             print("trying to set user")
             
-            _currentUser = user
-            
-            let defaults = UserDefaults.standard
-            
-            if let user = user {
-                let data = try! JSONSerialization.data(withJSONObject: user.dictionary!, options: [])
-                defaults.set(data, forKey: "currentUserData")
-            } else {
-                defaults.removeObject(forKey: "currentUserData")
-            }
-
-            defaults.synchronize()
+            _current = user
         }
     }
     
-    
+    init(dictionary: NSDictionary) {
+        self.dictionary = dictionary
+        self.name = dictionary["name"] as? String
+        self.followers = String(describing: dictionary["followers_count"] as! Int)
+        self.following = String(describing: dictionary["friends_count"] as! Int)
+        self.tweets = String(describing: dictionary["statuses_count"] as! Int)
+        
+        self.screenname = dictionary["screen_name"] as? String
+        self.name = dictionary["name"] as? String
+        let profileUrlString = dictionary["profile_image_url_https"] as? String
+        if let profileUrlString = profileUrlString {
+            self.profileUrl = URL(string: profileUrlString)
+        }
+        
+        let profileBackgroundUrlString = dictionary["profile_background_image_url_https"] as? String
+        if let profileBackgroundUrlString = profileBackgroundUrlString {
+            self.profileBackgroundUrl = URL(string: profileBackgroundUrlString)
+        }
+        
+        self.tagline = dictionary["description"] as? String
+        self.userId = dictionary["id_str"] as? String
+    }
 }

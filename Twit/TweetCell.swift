@@ -11,6 +11,7 @@ import AFNetworking
 
 class TweetCell: UITableViewCell {
 
+    var userId: String!
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var tweetLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -18,23 +19,22 @@ class TweetCell: UITableViewCell {
     
     var tweet: Tweet! {
         didSet {
-            print("hello \(tweet.userImageUrlString)")
+            // print("hello \(tweet.userImageUrlString)")
             usernameLabel.text = tweet.user
             timestampLabel.text = tweet.timestamp
             tweetLabel.text = tweet.text
+            userId = tweet.userId
             if tweet.userImageUrl != nil {
                 userImageView.setImageWith(tweet.userImageUrl!)
             }
         }
     }
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         userImageView.layer.cornerRadius = 3
         userImageView.clipsToBounds = true
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

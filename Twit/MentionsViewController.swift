@@ -1,14 +1,14 @@
 //
-//  TweetsViewController.swift
+//  MentionsViewController.swift
 //  Twit
 //
-//  Created by Sara Hender on 10/26/16.
+//  Created by Sara Hender on 11/7/16.
 //  Copyright © 2016 Sara Hender. All rights reserved.
 //
 
 import UIKit
 
-class TweetsViewController: UIViewController {
+class MentionsViewController: UIViewController {
 
     var tweets: Tweets!
     
@@ -22,13 +22,14 @@ class TweetsViewController: UIViewController {
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
+        //tableView.tableFooterView = UIView()
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         
         if tweets == nil {
-            tweets = Tweets(type: .HomeTimeline)
+            tweets = Tweets(type: .Mentions)
         }
         
         tweets.update(success: { (tweets: [Tweet]) -> () in
@@ -37,7 +38,7 @@ class TweetsViewController: UIViewController {
             print(error.localizedDescription)
         })
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         print(#function)
         tableView.reloadData()
@@ -46,10 +47,10 @@ class TweetsViewController: UIViewController {
     @IBAction func logout(_ sender: AnyObject) {
         TwitterClient.sharedInstance.signout()
     }
-
+    
     func refreshControlAction(refreshControl: UIRefreshControl) {
         tweets.update(success: { (tweets: [Tweet]) -> () in
-            //print("Refreshing timeline: \(tweets.count)")
+            print("Refreshing timeline: \(tweets.count)")
             self.tableView.reloadData()
             refreshControl.endRefreshing()
         }, failure: { (error: Error) -> () in
@@ -63,8 +64,7 @@ class TweetsViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let profileViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
         
-        User.current?.userId = cell.userId
-        
+        profileViewController.userId = cell.userId
         self.navigationController?.pushViewController(profileViewController, animated: true)
     }
     
@@ -74,7 +74,7 @@ class TweetsViewController: UIViewController {
     }
 }
 
-extension TweetsViewController: UITableViewDelegate, UITableViewDataSource {
+extension MentionsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TweetCell
         cell.tweet = tweets.tweets[indexPath.row]

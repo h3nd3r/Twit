@@ -26,9 +26,19 @@ class SignInViewController: UIViewController {
     }
     
     @IBAction func onSignIn(_ sender: AnyObject) {
-        TwitterClient.sharedInstance.signin(success: {
-            () -> () in
-            self.performSegue(withIdentifier: "SigninSegue", sender: nil)
+        TwitterClient.sharedInstance.signin(success: { () -> () in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let hamburgerViewController = storyboard.instantiateViewController(withIdentifier: "HamburgerViewController") as! HamburgerViewController
+            let menuViewController = storyboard.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+            
+            menuViewController.hamburgerViewController = hamburgerViewController
+            hamburgerViewController.menuViewController = menuViewController
+            
+            self.present(hamburgerViewController, animated: true)
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window!.rootViewController = hamburgerViewController
+            
+            //self.performSegue(withIdentifier: "SigninSegue", sender: nil)
         }) { (error: NSError) -> () in
             print("Error: \(error.localizedDescription)")
         }

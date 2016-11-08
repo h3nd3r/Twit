@@ -18,10 +18,12 @@ class Tweet: NSObject {
     var userImageUrl: URL?
     var tweedId: String?
     var screenName: String?
+    var userId: String?
     
     init(dictionary: NSDictionary) {
-        print(dictionary)
+        //print(dictionary)
         screenName = (dictionary["user"] as! NSDictionary)["screen_name"] as? String
+        userId = (dictionary["user"] as! NSDictionary)["id_str"] as? String
         tweedId = dictionary["id_str"] as? String
         text = dictionary["text"] as? String
         user = (dictionary["user"] as! NSDictionary)["name"] as? String
@@ -55,6 +57,8 @@ class Tweet: NSObject {
     
     class func tweetsWithArray(dictionaries: [NSDictionary]) -> [Tweet]{
         var tweets:[Tweet] = []
+        
+        //print(dictionaries)
         
         for dictionary in dictionaries {
             let tweet = Tweet(dictionary: dictionary)

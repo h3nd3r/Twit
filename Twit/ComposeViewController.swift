@@ -21,9 +21,9 @@ class ComposeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tweetTextView.delegate = self
-        userImageView.setImageWith((User.currentUser?.profileUrl)!)
-        usernameLabel.text = User.currentUser?.name
-        handleLabel.text = "@" + (User.currentUser?.screenname)!
+        userImageView.setImageWith((SignInUser.currentUser?.profileUrl)!)
+        usernameLabel.text = SignInUser.currentUser?.name
+        handleLabel.text = "@" + (SignInUser.currentUser?.screenname)!
         tweetTextView.text = tweetText
         tweetTextView.layer.cornerRadius = 10
     }
